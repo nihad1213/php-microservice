@@ -1,5 +1,5 @@
 {
-    "name": "php-microservices/core",
+    "name": "php-microservices/shared",
     "description": "Shared core library for the microservices",
     "type": "library",
     "require": {
@@ -8,7 +8,7 @@
 
     "autoload": {
         "psr-4": {
-            "Core\\": "src/"
+            "Core\\": "core/"
         }
     }
 
