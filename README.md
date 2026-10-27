@@ -1,0 +1,1 @@
+This project is about how to create microservices in Core PHP.
