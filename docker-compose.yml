@@ -1,0 +1,56 @@
+services:
+  auth:
+    image: php:8.3-cli
+    working_dir: /app
+    volumes:
+      - ./services/auth:/app
+    command: php -S 0.0.0.0:8000 -t public
+    ports:
+      - "8001:8000"
+
+  gateway:
+    image: php:8.3-cli
+    working_dir: /app
+    volumes:
+      - ./services/gateway:/app
+    command: php -S 0.0.0.0:8000 -t public
+    ports:
+      - "8000:8000"
+
+  notifications:
+    image: php:8.3-cli
+    working_dir: /app
+    volumes:
+      - ./services/notifications:/app
+    command: php -S 0.0.0.0:8000 -t public
+    ports:
+      - "8003:8000"
+
+  tasks:
+    image: php:8.3-cli
+    working_dir: /app
+    volumes:
+      - ./services/tasks:/app
+    command: php -S 0.0.0.0:8000 -t public
+    ports:
+      - "8002:8000"
+
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+  
+  phpmyadmin:
+    image: phpmyadmin:5
+    environment:
+      PMA_HOST: mysql
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
