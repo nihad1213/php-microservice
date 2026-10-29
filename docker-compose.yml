@@ -20,20 +20,41 @@ services:
       - ./services/gateway:/var/www/html
 
   auth:
-    image: php:8.3-fpm
+    build: ./docker/php
     volumes:
       - ./services/auth:/var/www/html
-
+    environment:
+      DB_HOST: mysql
+      DB_NAME: auth_db
+      DB_USER: root
+      DB_PASS: root
+    depends_on:
+      - mysql
+ 
   tasks:
-    image: php:8.3-fpm
+    build: ./docker/php
     volumes:
       - ./services/tasks:/var/www/html
-
+    environment:
+      DB_HOST: mysql
+      DB_NAME: tasks_db
+      DB_USER: root
+      DB_PASS: root
+    depends_on:
+      - mysql
+ 
   notifications:
-    image: php:8.3-fpm
+    build: ./docker/php
     volumes:
       - ./services/notifications:/var/www/html
-
+    environment:
+      DB_HOST: mysql
+      DB_NAME: notify_db
+      DB_USER: root
+      DB_PASS: root
+    depends_on:
+      - mysql
+      
   mysql:
     image: mysql:8.4
     environment:
