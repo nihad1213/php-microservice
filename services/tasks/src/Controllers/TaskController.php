@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\TaskRepository;
+use App\Services\NotificationClient;
 use Core\Exceptions\HttpException;
 use Core\Http\Request;
 use Core\Http\Response;
@@ -15,11 +16,13 @@ class TaskController
 {
     private TaskRepository $tasks;
     private Logger $log;
+    private NotificationClient $notifier;
 
-    public function __construct(?TaskRepository $tasks = null, ?Logger $log = null)
+    public function __construct(?TaskRepository $tasks = null, ?Logger $log = null, ?NotificationClient $notifier = null)
     {
         $this->tasks = $tasks ?? new TaskRepository();
         $this->log = $log ?? Logger::forService('tasks', dirname(__DIR__, 2));
+        $this->notifier = $notifier ?? new NotificationClient($this->log);
     }
 
     public function index(Request $request): Response
@@ -53,9 +56,12 @@ class TaskController
 
         $id = $this->tasks->create($userId, self::input($request, false));
 
-        $this->log->info('Task created', ['user_id' => $userId, 'task_id' => $id]);
+        $task = $this->tasks->find($userId, $id);
 
-        return Response::json($this->tasks->find($userId, $id), 201);
+        $this->log->info('Task created', ['user_id' => $userId, 'task_id' => $id]);
+        $this->notifier->send('task.created', $userId, $task);
+
+        return Response::json($task, 201);
     }
 
     public function show(Request $request, array $params): Response
@@ -76,9 +82,15 @@ class TaskController
 
         $this->tasks->update($userId, $task['id'], $data);
 
+        $updated = $this->tasks->find($userId, $task['id']);
+
         $this->log->info('Task updated', ['user_id' => $userId, 'task_id' => $task['id']]);
 
-        return Response::json($this->tasks->find($userId, $task['id']));
+        if ($task['status'] !== 'done' && $updated['status'] === 'done') {
+            $this->notifier->send('task.completed', $userId, $updated);
+        }
+
+        return Response::json($updated);
     }
 
     public function complete(Request $request, array $params): Response
@@ -88,9 +100,15 @@ class TaskController
 
         $this->tasks->update($userId, $task['id'], ['status' => 'done']);
 
+        $completed = $this->tasks->find($userId, $task['id']);
+
         $this->log->info('Task completed', ['user_id' => $userId, 'task_id' => $task['id']]);
 
-        return Response::json($this->tasks->find($userId, $task['id']));
+        if ($task['status'] !== 'done') {
+            $this->notifier->send('task.completed', $userId, $completed);
+        }
+
+        return Response::json($completed);
     }
 
     public function destroy(Request $request, array $params): Response
