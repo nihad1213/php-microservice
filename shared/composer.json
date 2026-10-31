@@ -1,15 +1,18 @@
 {
-    "name": "php-microservices/shared",
+    "name": "php-micro/shared",
     "description": "Shared core library for the microservices",
     "type": "library",
+    "version": "1.0.0",
     "require": {
-        "php": ">=8.2"
+        "php": ">=8.2",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-pdo": "*"
     },
-
     "autoload": {
         "psr-4": {
             "Core\\": "core/"
         }
     }
-
 }

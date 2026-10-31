@@ -1,0 +1,22 @@
+{
+    "name": "php-micro/gateway",
+    "type": "project",
+    "require": {
+        "php": ">=8.2",
+        "php-micro/shared": "*"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../shared"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}

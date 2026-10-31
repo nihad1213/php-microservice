@@ -1,0 +1,47 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "95dba457e7df409375cefbe2d882857b",
+    "packages": [
+        {
+            "name": "php-micro/shared",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "../../shared",
+                "reference": "c3ad5250b2d3944f053e28ce1e9067e941f09f3e"
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-pdo": "*",
+                "php": ">=8.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Core\\": "core/"
+                }
+            },
+            "description": "Shared core library for the microservices",
+            "transport-options": {
+                "relative": true
+            }
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {},
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=8.2"
+    },
+    "platform-dev": {},
+    "plugin-api-version": "2.11.0"
+}

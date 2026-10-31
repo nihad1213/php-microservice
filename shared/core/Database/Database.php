@@ -10,7 +10,7 @@ use RuntimeException;
 
 class Database
 {
-    private static ?PDO $pdo = nulll;
+    private static ?PDO $pdo = null;
 
     public static function connection(): PDO
     {
