@@ -1,10 +1,8 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Middleware;
 
-use App\Middleware\RequireInternalKey;
 use Core\Exceptions\HttpException;
 use Core\Http\Request;
 use Core\Http\Response;

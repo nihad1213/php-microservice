@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Core\Http;
 
 use Core\Exceptions\HttpException;
-use Core\Http\ClientResponse;
 
 class HttpClient
 {

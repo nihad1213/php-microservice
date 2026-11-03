@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Core\Database;
@@ -19,7 +18,6 @@ class Database
         }
 
         $name = self::env('DB_NAME');
-
         if ($name === '') {
             throw new RuntimeException('DB_NAME is not set');
         }
@@ -30,7 +28,7 @@ class Database
             self::env('DB_PORT', '3306'),
             $name
         );
-        
+
         self::$pdo = new PDO($dsn, self::env('DB_USER'), self::env('DB_PASS'), [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -44,7 +42,7 @@ class Database
     {
         $statement = self::connection()->prepare($sql);
         $statement->execute($params);
- 
+
         return $statement;
     }
 
@@ -56,7 +54,7 @@ class Database
     public static function fetchOne(string $sql, array $params = []): ?array
     {
         $row = self::query($sql, $params)->fetch();
- 
+
         return $row === false ? null : $row;
     }
 
@@ -73,7 +71,7 @@ class Database
     private static function env(string $key, string $default = ''): string
     {
         $value = $_ENV[$key] ?? getenv($key);
- 
+
         return $value === false ? $default : (string) $value;
     }
 }
